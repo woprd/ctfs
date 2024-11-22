@@ -196,7 +196,7 @@ flag{digging_for_dns_data}
 
 - This could have been made more difficult with legitimate DNS traffic in the packets. In that case perhaps Solution 2 would have been more robust.
 - `jq` syntax (like `sed` and `regex`) is complex and difficult to remember. Large **Language** Models are made for translation, so they're well suited to creating these types of commands. 
-- In future I think I'll start with Solution 2 and fall back on bespoke Python code like Solution 1 if that fails. 
+- In future challenge, I plan to start with an approach like Solution 2 and fall back on bespoke Python code like Solution 1 if that fails. 
 
 ---
 
