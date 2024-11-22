@@ -27,8 +27,9 @@ Posting 2 solutions here: Solution 1 was during the comp., Solution 2 was though
 
 ### Solution 1
 
-- [Wireshark]([Link to tool, if applicable](https://www.wireshark.org/))
+- [Wireshark](https://www.wireshark.org/))
 - [Python]
+- [iPython]
 
 ### Solution 2
 
