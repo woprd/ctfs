@@ -143,19 +143,57 @@ Harry Wilson	129	951 753 456	78
 
 ## Solution 2
 
+This one is much shorter as since learned suricata (even with default rules) raises alerts on unusual network traffic. 
 
+```bash
+suricata -r data.pcap 
+```
 
+Inspect the output
+
+```bash
+head -n5 eve.json
+{"timestamp":"2024-11-13T12:22:00.381225+1100","flow_id":229978107844536,"pcap_cnt":15,"event_type":"dns","src_ip":"172.18.0.2","src_port":41195,"dest_ip":"92.42.1.83","dest_port":53,"proto":"UDP","pkt_src":"wire/pcap","dns":{"type":"query","id":4908,"rrname":"bQo=.msndhfie.com","rrtype":"TXT","tx_id":0,"opcode":0}}
+{"timestamp":"2024-11-13T12:21:43.564905+1100","flow_id":252156359044262,"event_type":"flow","src_ip":"172.18.0.2","src_port":52526,"dest_ip":"23.221.133.223","dest_port":443,"proto":"TCP","flow":{"pkts_toserver":9,"pkts_toclient":7,"bytes_toserver":1369,"bytes_toclient":5372,"start":"2024-11-13T12:22:00.386389+1100","end":"2024-11-13T12:22:00.395461+1100","age":0,"state":"new","reason":"timeout","alerted":false},"tcp":{"tcp_flags":"00","tcp_flags_ts":"00","tcp_flags_tc":"00"}}
+{"timestamp":"2024-11-13T12:23:10.454889+1100","flow_id":1953734273435255,"pcap_cnt":38,"event_type":"dns","src_ip":"172.18.0.2","src_port":48963,"dest_ip":"92.42.1.83","dest_port":53,"proto":"UDP","pkt_src":"wire/pcap","dns":{"type":"query","id":15154,"rrname":"TmFtZQlFbXBsb3llZSBJRAlUYXggRmlsZSBOdW1iZXIgKFRGTikJQWRkcmVz.msndhfie.com","rrtype":"TXT","tx_id":0,"opcode":0}}
+{"timestamp":"2024-11-13T12:21:43.564905+1100","flow_id":1036130223887667,"event_type":"flow","src_ip":"104.244.42.65","src_port":443,"dest_ip":"172.18.0.2","dest_port":33456,"proto":"TCP","flow":{"pkts_toserver":2,"pkts_toclient":1,"bytes_toserver":156,"bytes_toclient":66,"start":"2024-11-13T12:21:55.306778+1100","end":"2024-11-13T12:21:55.346794+1100","age":0,"state":"new","reason":"timeout","alerted":false},"tcp":{"tcp_flags":"00","tcp_flags_ts":"00","tcp_flags_tc":"00"}}
+{"timestamp":"2024-11-13T12:23:12.218431+1100","flow_id":93729663661043,"pcap_cnt":84,"event_type":"dns","src_ip":"172.18.0.2","src_port":33672,"dest_ip":"92.42.1.83","dest_port":53,"proto":"UDP","pkt_src":"wire/pcap","dns":{"type":"query","id":4910,"rrname":"cwlQaG9uZSBOdW1iZXIJU2FsYXJ5CUJhbmsgQWNjb3VudCBOdW1iZXIJRGVw.msndhfie.com","rrtype":"TXT","tx_id":0,"opcode":0}}
+```
+
+Then asked a trusty LLM to create a chained jq command to implement the same logic as we did for python. 
+
+```bash
+jq -r 'select(.event_type == "dns") | .dns.rrname' eve.json | sed 's/\.msndhfie\.com//g' | tr -d '\n' | base64 --decode
+Name    Employee ID     Tax File Number (TFN)   Address Phone Number    Salary  Bank Account Number      Department      Email
+John Doe        101     123 456 789     1234 George St, Sydney, NSW     0412 345 678    $85,000  123456789012    IT      john.doe@smartcity.com.au
+Jane Smith      102     987 654 321     5678 Collins St, Melbourne, VIC 0423 456 789    $92,000  987654321098    HR      jane.smith@smartcity.com.au
+Bob Johnson     103     135 792 468     2468 Queen St, Brisbane, QLD    0434 567 890    $75,000  135792468012    Finance bob.johnson@smartcity.com.au
+Alice Brown     104     246 810 135     7890 Flinders St, Adelaide, SA  0415 678 901    $88,500  246810135024    IT      alice.brown@smartcity.com.au
+Michael Green   105     975 312 468     1234 King William St, Perth, WA 0416 789 012    $67,500  975312468135    Operations      michael.green@smartcity.com.au
+Sarah White     106     321 654 987     4567 Swanston St, Melbourne, VIC        0417 890 123     $82,300 321654987246    HR      sarah.white@smartcity.com.au
+David Black     107     789 456 123     8901 Bourke St, Sydney, NSW     0418 901 234    $69,000  789456123357    Sales   david.black@smartcity.com.au
+Emily Harris    108     159 753 246     2345 Edward St, Brisbane, QLD   0419 012 345    $94,200  159753246468    Finance emily.harris@smartcity.com.au
+Daniel Cooper   109     654 321 987     5678 Pirie St, Adelaide, SA     0420 123 456    $77,400  654321987579    IT      daniel.cooper@smartcity.com.au
+Laura King      110     963 258 741     7890 Stirling Hwy, Perth, WA    0421 king@smartcity.com.au
+Tom Wright      111     852 147 963     1234 Hay St, Sydney, NSW        0422 345 678    $76234 567       $83,900 963258741680    Marketing       laura.,800      852147963791    Operations       tom.wright@smartcity.com.au
+Olivia Scott    112     951 753 852     4567 Barrack St, Perth, WA      0423 456 789    $89,500  951753852902    Sales   olivia.scott@smartcity.com.au
+Jacob Evans     113     654 789 321     7890 Elizabeth St, Melbourne, VIC       0424 567 890     $72,000 654789321013    IT      jacob.evans@smartcity.com.au
+Mia Carter      114     321 987 654     1234 Currie St, Adelaide, SA    0425 678 901    $91,000  321987654124    HR      mia.carter@smartcity.com.au
+Samuel Morris   115     987 321 654     4567 Oxford St, Brisbane, QLD   0426 789 012    $84,700  987321654235    Finance samuel.morris@smartcity.com.au
+Chloe Baker     116     654 159 753     7890 Hindley St, Adelaide, SA   0427 890 123    $79,800  654159753346    Marketing       chloe.baker@smartcity.com.au
+Luke Adams      117     789 321 456     1234 George St, Sydney, NSW     0428 901 234    $86,200  789321456457    Operations      luke.adams@smartcity.com.au
+Grace Clark     118     753 951 852     4567 North Terrace, Adelaide, SA        0429 012 345     $7om.au
+James Lee       119     852 654 753     7890 Queen St8,500      753951852568    IT      grace.clark@smartcity.c, Brisbane, QLD   0430 123 456    $90,300 852654753679    Sales   james.lee@smartcity.com.au
+Isabella Young  120     951 852 753     1234 Little Collins St, Melbourne, VIC  0431 234 567     $87,000 951852753790    Finance isabella.young@smartcity.com.au
+flag{digging_for_dns_data}
 ---
+
+
 
 ## Notes
-- [Any interesting observations or things that helped you solve the challenge]
-- [Anything unusual you encountered during the process, such as complex file formats, hidden encryption schemes, or unusual artifacts]
-- [Possible improvements or alternative solutions you might have thought about]
-
----
-
-## Additional Resources (Optional)
-- Links to relevant resources, tools, or writeups that helped you in solving the challenge.
+- This could have been made more difficult with legitimate DNS traffic in the packets. In that case perhaps Solution 2 would have been more robust.
+- jq syntax (like sed and regex) is complex and difficult to remember. Large **Language** Models are made for translation, so they're well suited to creating these types of commands. 
+- In future I think I'll start with Solution 2 and fall back on bespoke Python code if that fails. 
 
 ---
 
