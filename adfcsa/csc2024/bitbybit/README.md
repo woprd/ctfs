@@ -15,11 +15,7 @@
 ## Challenge Overview
 * **Category:** Digital Forensics
 * **Difficulty:** [Medium]
-* **Description:**  
- We have access to network tap between server and gateway accessible via ssh. Need to determine how data exfiltrated and flag is contained in the same. 
-
-
----
+* **Description:** We have access to network tap between server and gateway accessible via ssh. Need to determine how data exfiltrated and flag is contained in the same. 
 
 Posting 2 solutions here: Solution 1 was during the comp., Solution 2 was thought of with hindsight. 
 
@@ -47,8 +43,8 @@ ssh <user>@<ip>
 sudo tcpdump -i eth0 -w data.pcap
 # CTRL-C after couple minutes
 ```
-Then download locally for analysis on local host
 
+Then downloaded to local host for analysis
 ```bash
 scp <user>@<ip>:<path>/data.pcap .
 ```
@@ -57,19 +53,21 @@ scp <user>@<ip>:<path>/data.pcap .
 
 ### Step 1: Initial Analysis
 
-Normally I would jump straight to Python and `scapy` to explore packets as I loathe GUIs. A teammate was wireshark-savvy so we buddied up. 
+Normally I would jump straight to Python and the `scapy` package to explore packets as I have old timer's aversion to GUIs (back in my day it was all Solaris boxes). 
 
-After first checking Statistics > Conversations, a cursory scroll through saw something odd in the DNS packet in light blue here:
+A teammate was wireshark-savvy so schooled the boomer. So we opened the `data.pcap` file in Wireshark.
+
+After first checking `Statistics > Conversations` with no joy, a cursory scroll through the packets saw something odd in the DNS packet in light blue here:
 
 ![BitByBit1](https://github.com/user-attachments/assets/ee8311df-1d3e-40a2-9e75-ab432570428d)
 
-Looks like a base64 encoded string? 
+Looks like a base64 encoded string in DNS traffic? Always wanted to exfil data over DNS.
 
 ---
 
 ### Step 2: Investigation/Exploitation
 
-At this point switched to Python/scapy to explore the packets. 
+At this point we switched to Python/scapy to explore the packets. 
 
 ```python
 # main.py
@@ -91,6 +89,7 @@ for packet in packets:
 
             qname = dns_layer[DNS].qd.qname.decode()
 
+            # append to big string, assumption here is the attacker is exfiltraing data piecemeal in FQDNs of DNS queries
             dns_q_names.append(qname.replace('.msndhfie.com.',''))
 
 exfil_data = ''.join(dns_q_names)
@@ -106,15 +105,19 @@ In [6]: exfil_data
 Out[6]: 'Mwk1Njc4IEtpbmcgV2lsbGlhbSBTdCwgQWRlbGFpZGUsIFNBCTA0MzMgNDU2IDc4OQkkODUsNTAwCTk1MTQ1Njc1MzkwMglIUglydWJ5Lmxld2lzQHNtYXJ0Y2l0eS5jb20uYXUKTGlhbSBXYWxrZXIJMTIzCTQ1NiA3ODkgMTIzCTc4OTAgU3RpcmxpbmcgSHd5LCBQZXJ0aCwgV0EJMDQzNCA1NjcgODkwCSQ3NCwyMDAJNDU2Nzg5MTIzMDEzCU9wZXJhdGlvbnMJbGlhbS53YWxrZXJAc21hcnRjaXR5LmNvbS5hdQpBdmEgTWl0Y2hlbGwJMTI0CTMyMSA2NTQgMTU5CTEyMzQgR2VvcmdlIFN0LCBCcmlzYmFuZSwgUUxECTA0MzUgNjc4IDkwMQkkNzgsMzAwCTMyMTY1NDE1OTEyNAlNYXJrZXRpbmcJYXZhLm1pdGNoZWxsQHNtYXJ0Y2l0eS5jb20uYXUKTm9haCBXb29kCTEyNQk3NTMgMTU5IDQ1Ngk0NTY3IENvbGxpbnMgU3QsIE1lbGJvdXJuZSwgVklDCTA0MzYgNzg5IDAxMgkkODEsOTAwCTc1MzE1OTQ1NjIzNQlTYWxlcwlub2FoLndvb2RAc21hcnRjaXR5LmNvbS5hdQpFbGxhIERhdmlzCTEyNgk5ODcgNDU2IDMyMQk3ODkwIEtpbmcgU3QsIFN5ZG5leSwgTlNXCTA0MzcgODkwIDEyMwkkODcsNjAwCTk4NzQ1NjMyMTM0NglJVAllbGxhLmRhdmlzQHNtYXJ0Y2l0eS5jb20uYXUKQmVuamFtaW4gSGlsbAkxMjcJMTU5IDg1MiA3NTMJMTIzNCBRdWVlbiBTdCwgUGVydGgsIFdBCTA0MzggOTAxIDIzNAkkNzksMjAwCTE1OTg1Mjc1MzQ1NwlGaW5hbmNlCWJlbmphbWluLmhpbGxAc21hcnRjaXR5LmNvbS5hdQpTb3BoaWUgVGhvbXBzb24JMTI4CTQ1NiA5ODcgMzIxCTU2NzggRWR3YXJkIFN0LCBCcmlzYmFuZSwgUUxECTA0MzkgMDEyIDM0NQkkODQsMTAwCTQ1Njk4NzMyMTU2OAlJVAlzb3BoaWUudGhvbXBzb25Ac21hcnRjaXR5LmNvbS5hdQpIYXJyeSBXaWxzb24JMTI5CTk1MSA3NTMgNDU2CTc4OTAgU3dhbnN0b24gU3QsIE1lbGJvdXJuZSwgVklDCTA0NDAgMTIzIDQ1NgkkNzUsODAwCTk1MTc1MzQ1NjY3OQlIUgloYXJyeS53aWxzb25Ac21hcnRjaXR5LmNvbS5hdQpab2UgQ2xhcmtlCTEzMAk4NTIgMTU5IDc1MwkxMjM0IEJhcnJhY2sgU3QsIFBlcnRoLCBXQQkwNDQxIDIzNCA1NjcJJDkwLDUwMAk4NTIxNTk3NTM3ODAJTWFya2V0aW5nCXpvZS5jbGFya2VAc21hcnRjaXR5LmNvbS5hdQpKYWNrIE1hcnRpbgkxMzEJNzUzIDQ1NiA5NTEJNDU2NyBIaW5kbGV5IFN0LCBBZGVsYWlkZSwgU0EJMDQ0MiAzNDUgNjc4CSQ4OCw5MDAJNzUzNDU2OTUxODAxCU9wZXJhdGlvbnMJamFjay5tYXJ0aW5Ac21hcnRjaXR5LmNvbS5hdQpMaWx5IFRheWxvcgkxMzIJMTU5IDc1MyA4NTIJNzg5MCBHZW9yZ2UgU3QsIFN5ZG5leSwgTlNXCTA0NDMgNDU2IDc4OQkkODIsNDAwCTE1OTc1Mzg1MjkwMglTYWxl'
 ```
 
+Let's decode that.
+
 ---
 
 ### Step 3: Flag Retrieval
 
-Adding line to decode from base64 then to UTF-8
+Adding line to `main.py` to decode from base64 then to UTF-8
 
 ```Python
 decoded_bytes = base64.b64decode(exfil_data).decode('utf-8')
 ```
+
+Re-ran 
 
 ```bash
 python main.py 
