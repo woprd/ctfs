@@ -3,11 +3,11 @@
 ## Table of Contents
 1. [Challenge Overview](#challenge-overview)
 2. [Tools Used](#tools-used)
-3. [Solution Steps](#solution-steps)
-    - [Step 1: Initial Analysis](#step-1-initial-analysis)
-    - [Step 2: Investigation/Exploitation](#step-2-investigationexploitation)
-    - [Step 3: Flag Retrieval](#step-3-flag-retrieval)
-4. [Flag](#flag)
+3. [Solution 1](#solution-1)
+    - [Step 1: Initial Analysis](#initial-analysis)
+    - [Step 2: Detailed Analysis](#detailed-analysis)
+    - [Step 3: Flag Retrieval](#flag-retrieval)
+3. [Solution 2](#solution-2)
 5. [Notes](#notes)
 
 ---
