@@ -1,16 +1,4 @@
-# CTF Writeup: [Challenge Name]
-
-## Table of Contents
-1. [Challenge Overview](#challenge-overview)
-2. [Tools Used](#tools-used)
-3. [Solution 1](#solution-1)
-    - [Step 1: Initial Analysis](#initial-analysis)
-    - [Step 2: Detailed Analysis](#detailed-analysis)
-    - [Step 3: Flag Retrieval](#flag-retrieval)
-3. [Solution 2](#solution-2)
-5. [Notes](#notes)
-
----
+# CTF Writeup:  Bit by Bit
 
 ## Challenge Overview
 * **Category:** Digital Forensics
