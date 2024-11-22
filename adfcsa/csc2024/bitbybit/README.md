@@ -23,8 +23,8 @@ Posting 2 solutions here: Solution 1 was during the comp.; Solution 2 was an aft
 
 ### Solution 1
 
-- [Wireshark](https://www.wireshark.org/))
-- [Python/iPython]
+- [Wireshark](https://www.wireshark.org/)
+- Python/iPython
 
 ### Solution 2
 
