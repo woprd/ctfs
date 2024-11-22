@@ -186,11 +186,14 @@ Grace Clark     118     753 951 852     4567 North Terrace, Adelaide, SA        
 James Lee       119     852 654 753     7890 Queen St8,500      753951852568    IT      grace.clark@smartcity.c, Brisbane, QLD   0430 123 456    $90,300 852654753679    Sales   james.lee@smartcity.com.au
 Isabella Young  120     951 852 753     1234 Little Collins St, Melbourne, VIC  0431 234 567     $87,000 951852753790    Finance isabella.young@smartcity.com.au
 flag{digging_for_dns_data}
+```
+
 ---
 
 
 
 ## Notes
+
 - This could have been made more difficult with legitimate DNS traffic in the packets. In that case perhaps Solution 2 would have been more robust.
 - `jq` syntax (like `sed` and `regex`) is complex and difficult to remember. Large **Language** Models are made for translation, so they're well suited to creating these types of commands. 
 - In future I think I'll start with Solution 2 and fall back on bespoke Python code like Solution 1 if that fails. 
