@@ -83,7 +83,7 @@ exfil_data = ''.join(dns_q_names)
 
 ```
 
-Running that in ipython (could also be a jupyter notebook)
+Running that script interactively in ipython (could also be a jupyter notebook)
 
 ```bash
 In [5]: run main.py
