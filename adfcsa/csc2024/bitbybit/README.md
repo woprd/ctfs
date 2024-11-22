@@ -15,17 +15,16 @@
 ## Challenge Overview
 * **Category:** Digital Forensics
 * **Difficulty:** [Medium]
-* **Description:** We have access to network tap between server and gateway accessible via ssh. Need to determine how data exfiltrated and flag is contained in the same. 
+* **Description:** We have access to network tap between server and gateway accessible via ssh. Need to determine how data was exfiltrated and the flag is contained in that data. 
 
-Posting 2 solutions here: Solution 1 was during the comp., Solution 2 was thought of with hindsight. 
+Posting 2 solutions here: Solution 1 was during the comp.; Solution 2 was an after-thought. 
 
 ## Tools Used
 
 ### Solution 1
 
 - [Wireshark](https://www.wireshark.org/))
-- [Python]
-- [iPython]
+- [Python/iPython]
 
 ### Solution 2
 
@@ -44,7 +43,7 @@ sudo tcpdump -i eth0 -w data.pcap
 # CTRL-C after couple minutes
 ```
 
-Then downloaded to local host for analysis
+Then downloaded the capture to local host for analysis
 ```bash
 scp <user>@<ip>:<path>/data.pcap .
 ```
@@ -53,19 +52,19 @@ scp <user>@<ip>:<path>/data.pcap .
 
 ### Step 1: Initial Analysis
 
-Normally I would jump straight to Python and the `scapy` package to explore packets as I have old timer's aversion to GUIs (back in my day it was all Solaris boxes). 
+Normally I would jump straight to Python and the `scapy` package to explore packets as I have old timer's aversion to GUIs (back in my day it was all mainframes and punch-cards). 
 
-A teammate was wireshark-savvy so schooled the boomer. So we opened the `data.pcap` file in Wireshark.
+A teammate was wireshark-savvy and kindly schooled the boomer. So we opened the `data.pcap` file in Wireshark.
 
 After first checking `Statistics > Conversations` with no joy, a cursory scroll through the packets saw something odd in the DNS packet in light blue here:
 
 ![BitByBit1](https://github.com/user-attachments/assets/ee8311df-1d3e-40a2-9e75-ab432570428d)
 
-Looks like a base64 encoded string in DNS traffic? Always wanted to exfil data over DNS.
+Looks like a base64 encoded string in DNS traffic to me. 
 
 ---
 
-### Step 2: Investigation/Exploitation
+### Step 2: Detailed Analysis
 
 At this point we switched to Python/scapy to explore the packets. 
 
@@ -105,19 +104,20 @@ In [6]: exfil_data
 Out[6]: 'Mwk1Njc4IEtpbmcgV2lsbGlhbSBTdCwgQWRlbGFpZGUsIFNBCTA0MzMgNDU2IDc4OQkkODUsNTAwCTk1MTQ1Njc1MzkwMglIUglydWJ5Lmxld2lzQHNtYXJ0Y2l0eS5jb20uYXUKTGlhbSBXYWxrZXIJMTIzCTQ1NiA3ODkgMTIzCTc4OTAgU3RpcmxpbmcgSHd5LCBQZXJ0aCwgV0EJMDQzNCA1NjcgODkwCSQ3NCwyMDAJNDU2Nzg5MTIzMDEzCU9wZXJhdGlvbnMJbGlhbS53YWxrZXJAc21hcnRjaXR5LmNvbS5hdQpBdmEgTWl0Y2hlbGwJMTI0CTMyMSA2NTQgMTU5CTEyMzQgR2VvcmdlIFN0LCBCcmlzYmFuZSwgUUxECTA0MzUgNjc4IDkwMQkkNzgsMzAwCTMyMTY1NDE1OTEyNAlNYXJrZXRpbmcJYXZhLm1pdGNoZWxsQHNtYXJ0Y2l0eS5jb20uYXUKTm9haCBXb29kCTEyNQk3NTMgMTU5IDQ1Ngk0NTY3IENvbGxpbnMgU3QsIE1lbGJvdXJuZSwgVklDCTA0MzYgNzg5IDAxMgkkODEsOTAwCTc1MzE1OTQ1NjIzNQlTYWxlcwlub2FoLndvb2RAc21hcnRjaXR5LmNvbS5hdQpFbGxhIERhdmlzCTEyNgk5ODcgNDU2IDMyMQk3ODkwIEtpbmcgU3QsIFN5ZG5leSwgTlNXCTA0MzcgODkwIDEyMwkkODcsNjAwCTk4NzQ1NjMyMTM0NglJVAllbGxhLmRhdmlzQHNtYXJ0Y2l0eS5jb20uYXUKQmVuamFtaW4gSGlsbAkxMjcJMTU5IDg1MiA3NTMJMTIzNCBRdWVlbiBTdCwgUGVydGgsIFdBCTA0MzggOTAxIDIzNAkkNzksMjAwCTE1OTg1Mjc1MzQ1NwlGaW5hbmNlCWJlbmphbWluLmhpbGxAc21hcnRjaXR5LmNvbS5hdQpTb3BoaWUgVGhvbXBzb24JMTI4CTQ1NiA5ODcgMzIxCTU2NzggRWR3YXJkIFN0LCBCcmlzYmFuZSwgUUxECTA0MzkgMDEyIDM0NQkkODQsMTAwCTQ1Njk4NzMyMTU2OAlJVAlzb3BoaWUudGhvbXBzb25Ac21hcnRjaXR5LmNvbS5hdQpIYXJyeSBXaWxzb24JMTI5CTk1MSA3NTMgNDU2CTc4OTAgU3dhbnN0b24gU3QsIE1lbGJvdXJuZSwgVklDCTA0NDAgMTIzIDQ1NgkkNzUsODAwCTk1MTc1MzQ1NjY3OQlIUgloYXJyeS53aWxzb25Ac21hcnRjaXR5LmNvbS5hdQpab2UgQ2xhcmtlCTEzMAk4NTIgMTU5IDc1MwkxMjM0IEJhcnJhY2sgU3QsIFBlcnRoLCBXQQkwNDQxIDIzNCA1NjcJJDkwLDUwMAk4NTIxNTk3NTM3ODAJTWFya2V0aW5nCXpvZS5jbGFya2VAc21hcnRjaXR5LmNvbS5hdQpKYWNrIE1hcnRpbgkxMzEJNzUzIDQ1NiA5NTEJNDU2NyBIaW5kbGV5IFN0LCBBZGVsYWlkZSwgU0EJMDQ0MiAzNDUgNjc4CSQ4OCw5MDAJNzUzNDU2OTUxODAxCU9wZXJhdGlvbnMJamFjay5tYXJ0aW5Ac21hcnRjaXR5LmNvbS5hdQpMaWx5IFRheWxvcgkxMzIJMTU5IDc1MyA4NTIJNzg5MCBHZW9yZ2UgU3QsIFN5ZG5leSwgTlNXCTA0NDMgNDU2IDc4OQkkODIsNDAwCTE1OTc1Mzg1MjkwMglTYWxl'
 ```
 
-Let's decode that.
+Let's decode the string.
+
+Adding line to `main.py` to decode from base64 then to UTF-8 and print that.
+
+```Python
+decoded_bytes = base64.b64decode(exfil_data).decode('utf-8')
+print(decoded_bytes)
+```
 
 ---
 
 ### Step 3: Flag Retrieval
 
-Adding line to `main.py` to decode from base64 then to UTF-8
-
-```Python
-decoded_bytes = base64.b64decode(exfil_data).decode('utf-8')
-```
-
-Re-ran 
+Re-ran the script
 
 ```bash
 python main.py 
@@ -143,7 +143,7 @@ Harry Wilson	129	951 753 456	78
 
 ## Solution 2
 
-This one is much shorter as since learned suricata (even with default rules) raises alerts on unusual network traffic. 
+This one is much shorter as I since learned that suricata (even with default rules) can be run on pcap files and log alerts on unusual network traffic. 
 
 ```bash
 suricata -r data.pcap 
@@ -160,7 +160,7 @@ head -n5 eve.json
 {"timestamp":"2024-11-13T12:23:12.218431+1100","flow_id":93729663661043,"pcap_cnt":84,"event_type":"dns","src_ip":"172.18.0.2","src_port":33672,"dest_ip":"92.42.1.83","dest_port":53,"proto":"UDP","pkt_src":"wire/pcap","dns":{"type":"query","id":4910,"rrname":"cwlQaG9uZSBOdW1iZXIJU2FsYXJ5CUJhbmsgQWNjb3VudCBOdW1iZXIJRGVw.msndhfie.com","rrtype":"TXT","tx_id":0,"opcode":0}}
 ```
 
-Then asked a trusty LLM to create a chained jq command to implement the same logic as we did for python. 
+I then asked a trusty LLM to create a chained jq command to implement the same logic as we did for python. 
 
 ```bash
 jq -r 'select(.event_type == "dns") | .dns.rrname' eve.json | sed 's/\.msndhfie\.com//g' | tr -d '\n' | base64 --decode
@@ -192,8 +192,8 @@ flag{digging_for_dns_data}
 
 ## Notes
 - This could have been made more difficult with legitimate DNS traffic in the packets. In that case perhaps Solution 2 would have been more robust.
-- jq syntax (like sed and regex) is complex and difficult to remember. Large **Language** Models are made for translation, so they're well suited to creating these types of commands. 
-- In future I think I'll start with Solution 2 and fall back on bespoke Python code if that fails. 
+- `jq` syntax (like `sed` and `regex`) is complex and difficult to remember. Large **Language** Models are made for translation, so they're well suited to creating these types of commands. 
+- In future I think I'll start with Solution 2 and fall back on bespoke Python code like Solution 1 if that fails. 
 
 ---
 
