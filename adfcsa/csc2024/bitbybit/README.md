@@ -143,7 +143,7 @@ Harry Wilson	129	951 753 456	78
 
 ## Solution 2
 
-This one is much shorter as I since learned that suricata (even with default rules) can be run on pcap files and log alerts on unusual network traffic. 
+This one is much shorter as I since learned that suricata (even with default rules) can analyse pcap files and log alerts on unusual network traffic. 
 
 ```bash
 suricata -r data.pcap 
