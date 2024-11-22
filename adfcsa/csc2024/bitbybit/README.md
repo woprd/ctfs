@@ -5,7 +5,7 @@
 * **Difficulty:** [Medium]
 * **Description:** We have access to network tap between server and gateway accessible via ssh. Need to determine how data was exfiltrated and the flag is contained in that data. 
 
-Posting 2 solutions here: Solution 1 was during the comp.; Solution 2 was an after-thought. 
+Posting 2 solutions here: Solution 1 was during the comp; Solution 2 was an after-thought. 
 
 ## Tools Used
 
