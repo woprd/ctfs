@@ -137,7 +137,7 @@ This one is much shorter as I since learned that suricata (even with default rul
 suricata -r data.pcap 
 ```
 
-Inspect the output
+Inspect the alerts in the default file that suricata creates 
 
 ```bash
 head -n5 eve.json
