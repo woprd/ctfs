@@ -40,9 +40,9 @@ scp <user>@<ip>:<path>/data.pcap .
 
 ### Step 1: Initial Analysis
 
-Normally I would jump straight to Python and the `scapy` package to explore packets as I have an old-timer's aversion to clicking on things in GUIs (back in my day it was all unix and ytalk and pine-mail). 
+Normally I would jump straight to Python and the `scapy` package to explore packets as I have an old-timer's aversion to clicking on things in GUIs (vim ftw amirite). 
 
-A teammate was wireshark-savvy and kindly schooled the boomer. So we opened the `data.pcap` file in Wireshark.
+A teammate was wireshark-savvy and kindly schooled me. So we opened the `data.pcap` file in Wireshark.
 
 After first checking `Statistics > Conversations` with no joy, a cursory scroll through the traffic saw something odd in a DNS packet in light blue here:
 
@@ -54,7 +54,7 @@ Looks like a base64 encoded string in DNS traffic to me.
 
 ### Step 2: Detailed Analysis
 
-At this point we switched to Python/scapy to explore the packets. Explanation in comments:
+At this point we switched to Python/scapy to explore the packets. See comments for explanation:
 
 ```python
 # main.py
@@ -95,7 +95,7 @@ Out[6]: 'Mwk1Njc4IEtpbmcgV2lsbGlhbSBTdCwgQWRlbGFpZGUsIFNBCTA0MzMgNDU2IDc4OQkkODU
 
 Let's decode the string.
 
-Added this to `main.py` to decode from base64 then to UTF-8 and print that.
+Then appended this to `main.py` to decode from base64 then to UTF-8 and print that.
 
 ```Python
 decoded_bytes = base64.b64decode(exfil_data).decode('utf-8')
@@ -146,7 +146,7 @@ head -n5 eve.json
 {"timestamp":"2024-11-13T12:21:43.564905+1100","flow_id":1036130223887667,"event_type":"flow","src_ip":"104.244.42.65","src_port":443,"dest_ip":"172.18.0.2","dest_port":33456,"proto":"TCP","flow":{"pkts_toserver":2,"pkts_toclient":1,"bytes_toserver":156,"bytes_toclient":66,"start":"2024-11-13T12:21:55.306778+1100","end":"2024-11-13T12:21:55.346794+1100","age":0,"state":"new","reason":"timeout","alerted":false},"tcp":{"tcp_flags":"00","tcp_flags_ts":"00","tcp_flags_tc":"00"}}
 {"timestamp":"2024-11-13T12:23:12.218431+1100","flow_id":93729663661043,"pcap_cnt":84,"event_type":"dns","src_ip":"172.18.0.2","src_port":33672,"dest_ip":"92.42.1.83","dest_port":53,"proto":"UDP","pkt_src":"wire/pcap","dns":{"type":"query","id":4910,"rrname":"cwlQaG9uZSBOdW1iZXIJU2FsYXJ5CUJhbmsgQWNjb3VudCBOdW1iZXIJRGVw.msndhfie.com","rrtype":"TXT","tx_id":0,"opcode":0}}
 ```
-Looks like it is alerting on the unusual DNS entries. I then asked a trusty LLM to create a chained jq command to implement the same logic as we did for python. 
+Looks like it is alerting on the unusual DNS entries. I then asked a trusty LLM to create a chained jq command to implement the same logic as we did in Python. 
 
 ```bash
 jq -r 'select(.event_type == "dns") | .dns.rrname' eve.json | sed 's/\.msndhfie\.com//g' | tr -d '\n' | base64 --decode
@@ -179,7 +179,7 @@ flag{digging_for_dns_data}
 ## Notes
 
 - This could have been made more difficult with legitimate DNS traffic in the packets. In that case there would've been an extra step to filter out the normal traffic.
-- `jq` syntax (like `sed` and `regex`) is complex and difficult to remember. Large **Language** Models have origins in machine translation, so they're well suited to creating natural language to these types of commands. 
+- `jq` syntax (like `sed` and `regex`) is complex and difficult to remember. Large **Language** Models have origins in machine translation, so they're well suited to converting natural language to these types of commands. 
 - In future challenges, I plan to start with an approach like Solution 2 and fall back on bespoke Python code like Solution 1 if that fails. 
 
 ---
