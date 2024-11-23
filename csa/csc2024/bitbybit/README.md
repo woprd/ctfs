@@ -174,11 +174,13 @@ Isabella Young  120     951 852 753     1234 Little Collins St, Melbourne, VIC  
 flag{digging_for_dns_data}
 ```
 
+Shazam.
+
 ---
 
 ## Notes
 
-- This could have been made more difficult with legitimate DNS traffic in the packets. In that case there would've been an extra step to filter out the normal traffic.
+- This could have been made more difficult with legitimate DNS traffic in the packets. In that case there would've been an extra step in the Python code to filter out the normal traffic.
 - `jq` syntax (like `sed` and `regex`) is complex and difficult to remember. Large **Language** Models have origins in machine translation, so they're well suited to converting natural language to these types of commands. 
 - In future challenges, I plan to start with an approach like Solution 2 and fall back on bespoke Python code like Solution 1 if that fails. 
 
