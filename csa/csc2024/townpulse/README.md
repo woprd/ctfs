@@ -131,8 +131,7 @@ find / -name flag.txt -type f
 cat /root/flag.txt
 FLAG{7H15_SUDO_C00K3D_R007}
 ```
-
-<iframe src="https://giphy.com/embed/lnlAifQdenMxW" width="480" height="274" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/football-night-fantasy-lnlAifQdenMxW">via GIPHY</a></p>
+![image](https://github.com/user-attachments/assets/d3bfd0de-c786-4567-a342-fa3c1ad88b9d)
 
 
 ---
