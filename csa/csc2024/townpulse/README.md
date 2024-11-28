@@ -80,11 +80,11 @@ sudo usermod -aG sudo Pentester
 Sorry, user Joan is not allowed to execute '/usr/sbin/usermod -aG sudo Pentester' as root on dad5f987a15f."
 ```
 
-Rubbing the brow here as I was heading for a PB for unfinished challenges in this event. Thankfully team-work makes the dream work and I looked to the east for a teammate wizard saviour:
+Nope. Gah! Rubbing my brow here as I was heading for a PB for unfinished challenges in this event. Thankfully team-work makes the dream work and I looked to the east for a teammate wizard saviour:
 
 ![image](./gandalf-white.gif)
 
-Lol, thanks wizard 🧙 10 seconds, one command, and a URL later: 
+Lol, thanks wizard teammate 🧙 10 seconds, one command, and a URL later: 
 
 ```bash
 sudo -l
