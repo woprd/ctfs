@@ -1,8 +1,8 @@
-# CTF Writeup:  Bit by Bit
+# CTF Writeup:  Town Pulse
 
 ## Challenge Overview
-* **Category:** Digital Forensics
-* **Difficulty:** [Easy]
+* **Category:** OS Exploitation
+* **Difficulty:** ["Easy"]
 * **Description:** We have access to a linux box, need to find vulnerabile configuration to escalate privileges and find flag. 
 
 
