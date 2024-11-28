@@ -78,7 +78,7 @@ sudo usermod -aG sudo Pentester
 Sorry, user Joan is not allowed to execute '/usr/sbin/usermod -aG sudo Pentester' as root on dad5f987a15f."
 ```
 
-Rubbing the brow here as I was heading for a PB for unfinished challenges in this event. Thankfully team-work makes the dream work and I looked to the east for a wizard saviour:
+Rubbing the brow here as I was heading for a PB for unfinished challenges in this event. Thankfully team-work makes the dream work and I looked to the east for a teammate wizard saviour:
 
 ![image](./gandalf-white.gif)
 
