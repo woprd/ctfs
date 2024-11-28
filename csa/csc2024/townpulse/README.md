@@ -8,9 +8,9 @@
 
 ## Tools Used
 
-- [Linpease](https://github.com/peass-ng/PEASS-ng/tree/master/linPEAS)
-- [gtfobins](https://gtfobins.github.io/)
-- [bash]
+- [linPEAS](https://github.com/peass-ng/PEASS-ng/tree/master/linPEAS)
+- [GTFOBins](https://gtfobins.github.io/)
+- bash
 
 ---
 
