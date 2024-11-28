@@ -80,7 +80,7 @@ Sorry, user Joan is not allowed to execute '/usr/sbin/usermod -aG sudo Pentester
 
 Rubbing the brow here as I was heading for a PB for unfinished challenges in this event. Thankfully team-work makes the dream work and I looked to the east for a wizard saviour:
 
-![image](https://github.com/user-attachments/assets/ae3a0073-47c4-4fd2-8951-ded3391ab218)
+![image](./gandalf-white.gif)
 
 Lol, thanks wizard 🧙 10 seconds, one command, and a URL later: 
 
