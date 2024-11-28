@@ -46,7 +46,7 @@ curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh
 
 Under Environment we see `JOAN_TEMPORARY_CREDS=jojocreds1`
 
-Well well well. For reasons mysterious there are temp creds for another user in our environment of our account. Let's try sshing into their account and see what permissions they have. Fingers crossed they're in sudoers and we can use their privesc ours **sinister laughing**. Which account though? 
+Well well well. For reasons mysterious there are temp creds for another user in our environment of our account. Let's try sshing into their account and see what permissions they have. Fingers crossed they're in sudoers and we can use their privilege to escalate ours **sinister laughing**. Which account though? 
 
 ```bash
 ls /home/
