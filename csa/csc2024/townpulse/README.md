@@ -131,7 +131,7 @@ find / -name flag.txt -type f
 cat /root/flag.txt
 FLAG{7H15_SUDO_C00K3D_R007}
 ```
-![image](https://github.com/user-attachments/assets/d3bfd0de-c786-4567-a342-fa3c1ad88b9d)
+![image]([https://github.com/user-attachments/assets/d3bfd0de-c786-4567-a342-fa3c1ad88b9d](https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExeGwybXFmeHBhMmRmbWprc2xrbjhqbGh1ZHVoM2RqNmEyZ3YzeTdraCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lnlAifQdenMxW/200.webp))
 
 
 ---
