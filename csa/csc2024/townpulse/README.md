@@ -148,7 +148,7 @@ FLAG{7H15_SUDO_C00K3D_R007}
 ## Notes
 
 - Don't be afraid to ask for help when you get blocked. Difficult for you can be easy for someone else and vice versa. 
-- As a team, set up some tools in comms (like threads in channels) to share progress on challenges.
+- As a team, set up some tools in comms (like a thread for each challenge) to share progress and artefacts for challenges so someone can pick up from where you were stuck.
 - Linpeas and gftobins are l337h4x0r was to privesc on linux. 🫶
 
 ---
