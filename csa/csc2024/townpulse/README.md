@@ -25,7 +25,7 @@ ssh Pentester@<ip>
 ssh: connect to host <ip> port 22: Connection refused
 ```
 
-Ah, ok why tho. Let's check what ports are open and services running:
+Ah, ok, why tho? Let's check what ports are open and services running:
 
 ```bash
 nmap -sV <ip>
