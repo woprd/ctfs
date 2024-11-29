@@ -230,7 +230,7 @@ Privilege escalated.
 Now the flag's gotta be here somewhere, normally I use `find` (looking for flag.txt) or `grep` (looking for string FLAG within a file) on the entire file system. Trying find first 
 
 ```bash
-find / -name flag.txt -type f
+\# find / -name flag.txt -type f
 /root/flag.txt
 ```
 
