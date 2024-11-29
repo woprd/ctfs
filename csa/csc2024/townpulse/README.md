@@ -251,7 +251,7 @@ FLAG{7H15_SUDO_C00K3D_R007}
 
 - Ask teammates for help when you get blocked. Difficult for you can be easy for them and vice versa. 
 - As a team, set up some tools in comms (like a thread for each challenge) to share progress and artefacts for challenges so someone can pick up from where someone else is stuck.
-- Linpeas and gtfobins are l337h4x0r was to privesc on linux. 🫶
+- Linpeas and gtfobins are l337h4x0r tools to privesc on linux. 🫶
 
 ---
 
