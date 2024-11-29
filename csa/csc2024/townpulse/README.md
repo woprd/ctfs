@@ -16,7 +16,7 @@
 
 ## Solution
 
-Usual disclaimer here: the following solution was the one that worked and there was some trial and error to find it. Omitting those dead-ends for brevity.  
+Usual disclaimer here: the following solution was the approach that worked and there was some trial and error to find it. Omitting those dead-ends for brevity.  
 
 ### Step 1: Initial Access
 
