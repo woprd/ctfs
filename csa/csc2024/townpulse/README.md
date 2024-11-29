@@ -211,7 +211,7 @@ sudo -l
 (ALL) NOPASSWD: /usr/bin/gcc
 ```
 
-Interesting this one, as the commands are limited to those Joan had. Wasn't expecting that. 
+Interesting this one, as the commands are limited to those Joan had permission to run as sudo. Wasn't expecting that. 
 
 Run that GTFOBin again with our account
 
