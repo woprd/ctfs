@@ -196,7 +196,7 @@ exit
 exit
 ```
 
-There we logged out of root, Joan, and Pentester, then sshed back in to the latter and to apply the new group memberships. Check those.
+There we logged out of root, Joan, and Pentester, then sshed back in to the latter to apply the new group memberships. Check those.
 
 ```bash
 ssh -p 2222 Pentester@<ip>
