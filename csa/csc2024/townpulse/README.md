@@ -167,14 +167,14 @@ Blerg! Rubbing the brow here as I was heading for a PB for unfinished challenges
 
 Thanks wizard teammate 🧙 10 seconds, one command, and a URL later. 
 
-The command.
+The command which shows the commands they can run as sudo.
 
 ```bash
 sudo -l
 (ALL) NOPASSWD: /usr/bin/gcc
 ```
 
-The URL: https://gtfobins.github.io/gtfobins/gcc#sudo
+The URL with ways to exploit that: https://gtfobins.github.io/gtfobins/gcc#sudo
 
 Doopdeedoop, let's try that GTOFbin command now.
 
