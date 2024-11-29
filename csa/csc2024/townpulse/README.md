@@ -196,7 +196,7 @@ exit
 exit
 ```
 
-There we logged out of root, Joan, and Pentester, then sshed back in to the latter and to apply the new group memberships. Check those:
+There we logged out of root, Joan, and Pentester, then sshed back in to the latter and to apply the new group memberships. Check those
 
 ```bash
 ssh -p 2222 Pentester@<ip>
@@ -213,7 +213,7 @@ sudo -l
 
 Interesting this one, as the commands are limited to those Joan had. Wasn't expecting that. 
 
-Run that GTFOBin again with our account.
+Run that GTFOBin again with our account
 
 ```bash
 Pentester@host:~$ sudo gcc -wrapper /bin/sh,-s .
