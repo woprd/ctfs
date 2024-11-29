@@ -3,7 +3,7 @@
 ## Challenge Overview
 * **Category:** OS Exploitation
 * **Difficulty:** ["Easy"]
-* **Description:** We have access to a linux box, need to find vulnerable configuration to escalate privileges and find flag. 
+* **Description:** We have ssh access to a linux box, need to find vulnerable configuration to escalate privileges and find flag. 
 
 
 ## Tools Used
