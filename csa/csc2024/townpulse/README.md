@@ -158,7 +158,7 @@ Good, good, now let's add our pentester account to sudoers.
 
 ```bash
 sudo usermod -aG sudo Pentester
-Sorry, user Joan is not allowed to execute '/usr/sbin/usermod -aG sudo Pentester' as root on dad5f987a15f."
+Sorry, user Joan is not allowed to execute '/usr/sbin/usermod -aG sudo Pentester' as root on host."
 ```
 
 Blerg! Rubbing the brow here as I was heading for a PB for unfinished challenges in this event. Thankfully team-work makes the dream work and I looked to the east for a teammate wizard saviour.
